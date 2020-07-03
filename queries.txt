@@ -1,3 +1,4 @@
+# Get list of ToDo's from DynamoDB
 query ListTodos {
   listTodos {
     items {
@@ -10,6 +11,7 @@ query ListTodos {
   }
 }
 
+# Get a single ToDo record based on ID
 query GetTodo { 
   getTodo(id: "a23aba14-0562-4bc3-a357-27e8a661a96d") {
       id
@@ -20,6 +22,7 @@ query GetTodo {
   }
 }
 
+# Add a new ToDo item to DB
 mutation AddTodo {
   addTodo(name: "Get Milk", description: "Buy 1% milk", priority: 1, status: pending) {
     id
@@ -30,6 +33,7 @@ mutation AddTodo {
   }
 }
 
+# Update an existing ToDo item based on ID
 mutation UpdateTodo {
   updateTodo(id: "a23aba14-0562-4bc3-a357-27e8a661a96d", name: "Get Milk2", description: "Buy 2% milk", priority: 2, status: pending) {
     id
@@ -40,12 +44,14 @@ mutation UpdateTodo {
   }
 }
 
+# Delete a ToDo item from DB
 mutation DeleteTodo {
   deleteTodo(id: "a25193ff-9057-497e-9067-a4d09bcb935b") {
     id
   }
 }
 
+# Invoke a Lambda function to get count of ToDo Items
 query GetToDoCount { 
   getTodosCount
 }

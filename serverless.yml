@@ -1,7 +1,7 @@
 org: anishsam
-app: sls-serverless-guru-todo-service
+app: sls-appsync-todo-service
 
-service: sls-serverless-todo-service
+service: sls-appsync-todo-service
 
 plugins:
   - serverless-appsync-plugin
@@ -19,7 +19,7 @@ custom:
   extra: ${file(vars/${self:custom.stage}.yaml)}
   accountId: #{AWS::AccountId}
   appSync:
-    name: sls-serverless-guru-todo-api-${self:custom.stage}
+    name: sls-appsync-todo-api-${self:custom.stage}
     authenticationType: API_KEY
     schema: schema.graphql
     serviceRole: AppSyncSGServiceRole-${self:custom.stage}
@@ -73,6 +73,8 @@ functions:
     role: ToDoCountLambdaExecutionRole
     environment:
       DDB_TABLE: { Ref: TodosDB }
+    tags:
+      APP_NAME: ${self:custom.extra.AppName}
 
 # CloudFormation Resource Templates
 resources:
@@ -88,6 +90,9 @@ resources:
           - AttributeName: id
             KeyType: HASH
         ProvisionedThroughput: ${self:custom.extra.DynamoCapacity}
+        Tags:
+          - Key: APP_NAME
+            Value: ${self:custom.extra.AppName}
     # AppSync lambda role
     AppSyncLambdaServiceRole:
       Type: AWS::IAM::Role
@@ -113,6 +118,9 @@ resources:
                   Resource:
                     - arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:${self:service}-${self:custom.stage}-todoCount
                     - arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:${self:service}-${self:custom.stage}-todoCount:*
+        Tags:
+          - Key: APP_NAME
+            Value: ${self:custom.extra.AppName}
     # Execution Role for ToDoCount Lambda
     ToDoCountLambdaExecutionRole:
       Type: AWS::IAM::Role
@@ -156,6 +164,9 @@ resources:
                           - Ref: 'AWS::AccountId'
                           - ':table/'
                           - Ref: TodosDB
+        Tags:
+          - Key: APP_NAME
+            Value: ${self:custom.extra.AppName}
   Outputs:
     TodosDB:
       Description: DynamoDB Table for ToDo

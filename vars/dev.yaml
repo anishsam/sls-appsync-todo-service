@@ -1,3 +1,4 @@
+AppName: sls-appsync-todo-service
 DynamoCapacity:
   ReadCapacityUnits: 1
   WriteCapacityUnits: 1
