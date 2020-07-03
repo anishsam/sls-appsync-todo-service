@@ -1,0 +1,51 @@
+query ListTodos {
+  listTodos {
+    items {
+      id
+      name
+      description
+      priority
+      status
+    }
+  }
+}
+
+query GetTodo { 
+  getTodo(id: "a23aba14-0562-4bc3-a357-27e8a661a96d") {
+      id
+      name
+      description
+      priority
+      status    
+  }
+}
+
+mutation AddTodo {
+  addTodo(name: "Get Milk", description: "Buy 1% milk", priority: 1, status: pending) {
+    id
+    name
+    description
+    priority
+    status
+  }
+}
+
+mutation UpdateTodo {
+  updateTodo(id: "a23aba14-0562-4bc3-a357-27e8a661a96d", name: "Get Milk2", description: "Buy 2% milk", priority: 2, status: pending) {
+    id
+    name
+    description
+    priority
+    status
+  }
+}
+
+mutation DeleteTodo {
+  deleteTodo(id: "a25193ff-9057-497e-9067-a4d09bcb935b") {
+    id
+  }
+}
+
+query GetToDoCount { 
+  getTodosCount
+}
